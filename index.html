@@ -53,7 +53,7 @@
     </div>
 
     <script>
-        let products = [];
+        let products = JSON.parse(localStorage.getItem('products')) || [];
 
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
@@ -67,6 +67,7 @@
             const productName = document.getElementById('productName').value;
             const productQuantity = document.getElementById('productQuantity').value;
             products.push({ barcode, productName, productQuantity });
+            localStorage.setItem('products', JSON.stringify(products));
             displayProducts();
             document.getElementById('addProductForm').reset();
         }
@@ -77,6 +78,7 @@
             const product = products.find(p => p.barcode === barcode);
             if (product) {
                 product.productQuantity = newQuantity;
+                localStorage.setItem('products', JSON.stringify(products));
                 displayProducts();
                 document.getElementById('updateProductForm').reset();
             } else {
@@ -110,6 +112,9 @@
                 productList.appendChild(li);
             });
         }
+
+        // Sayfa yüklendiğinde ürünleri göster
+        document.addEventListener('DOMContentLoaded', displayProducts);
     </script>
 </body>
 </html>
